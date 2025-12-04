@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mira | Hair & Color Services Quote</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mira-primary': '#e74c3c', // Mira's primary color (Accent from Hub)
+                        'mira-secondary': '#fef2f2', // Light red/pink background
+                        'dark-bg': '#2c3e50',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .container-bg {
+            background-color: #fef2f2;
+        }
+        .input-style {
+            @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-mira-primary focus:border-mira-primary transition duration-200;
+        }
+    </style>
+</head>
+<body class="bg-mira-secondary min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-4xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-mira-primary">Mira - Personalized Hair & Color Quote</h1>
+            <p class="text-lg text-gray-600 mt-2">Specializing in Cuts, Color Transformation, and Media Styling.</p>
+        </header>
+
+        <!-- Section 1: Service Selection -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">1. Choose Service Category</h2>
+            <select id="serviceCategory" class="input-style bg-white" onchange="updateUI()">
+                <option value="salon">Salon Services (Cut, Color, Treatments)</option>
+                <option value="media">Film/TV/Photoshoot (Hourly Rate)</option>
+            </select>
+        </section>
+
+        <!-- Section 2A: Salon Services Options (Default view) -->
+        <section id="salonOptions" class="mb-8 p-6 border border-mira-primary rounded-xl bg-mira-secondary/50">
+            <h2 class="text-2xl font-semibold mb-4 text-mira-primary">Salon Service Details (By Item)</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <!-- Haircut -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Haircut</label>
+                    <select id="haircut" class="input-style bg-white" onchange="calculateBudget()">
+                        <option value="0">No Haircut</option>
+                        <option value="150">Precision Cut ($150)</option>
+                        <option value="100">Trim Only ($100)</option>
+                    </select>
+                </div>
+
+                <!-- Color Options -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Coloring Service</label>
+                    <select id="coloring" class="input-style bg-white" onchange="calculateBudget()">
+                        <option value="0">No Color Service</option>
+                        <option value="250">Single Process Color ($250)</option>
+                        <option value="450">Highlights/Balayage (Starting at $450)</option>
+                        <option value="600">Full Color Transformation (Starting at $600)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <label class="flex items-center text-gray-700">
+                    <input type="checkbox" id="treatment" class="rounded text-mira-primary focus:ring-mira-primary" onchange="calculateBudget()">
+                    <span class="ml-2">Add Deep Conditioning Treatment (+$80.00)</span>
+                </label>
+                <p id="bundleMessage" class="mt-4 text-green-600 font-bold hidden">🌟 Bundle Discount Applied: 15% off when selecting both Cut and Color!</p>
+            </div>
+        </section>
+
+        <!-- Section 2B: Media Options (Appears when "Film/TV" is selected) -->
+        <section id="mediaOptions" class="mb-8 p-6 border border-mira-primary rounded-xl bg-mira-secondary/50 hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-mira-primary">Production Details (Hourly Rate)</h2>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Estimated Work Hours (Minimum 4h)</label>
+            <input type="number" id="numHoursMedia" value="4" min="4" class="input-style" oninput="calculateBudget()">
+            <p class="text-sm text-gray-500 mt-2">The standard day rate is $900.00 for 8 hours, or $140.00 per individual hour. Minimum 4 hours required.</p>
+        </section>
+
+
+        <!-- Section 3: Quote Result -->
+        <section class="mb-8 p-6 border-t-2 border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">3. Your Quote</h2>
+            <div class="flex justify-between items-center bg-mira-primary text-white p-4 rounded-lg shadow-md">
+                <span class="text-xl font-bold">Estimated Total Price:</span>
+                <span id="totalPrice" class="text-3xl font-extrabold">$0.00</span>
+            </div>
+            <p id="baseRate" class="text-sm text-gray-500 mt-2 text-right">Base Rate: $0.00</p>
+        </section>
+        
+        <!-- Section 4: Contract Generation -->
+        <section class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">4. Generate Contract Draft</h2>
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Full Name</label>
+                    <input type="text" id="clientName" placeholder="Your Name" class="input-style">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Service Date</label>
+                    <input type="date" id="serviceDate" class="input-style">
+                </div>
+            </div>
+            <button onclick="generateContract()" class="w-full bg-dark-bg text-white font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-300">
+                Generate Contract Draft
+            </button>
+        </section>
+
+        <!-- Contract Display Section -->
+        <section id="contractDisplay" class="mt-8 p-6 bg-gray-50 border border-gray-200 rounded-xl hidden">
+            <h3 class="text-2xl font-bold text-mira-primary mb-4">Service Agreement Draft</h3>
+            <pre id="contractText" class="whitespace-pre-wrap text-sm text-gray-700"></pre>
+            <button onclick="copyContract()" class="mt-4 bg-mira-primary text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition duration-300">Copy Contract</button>
+            <span id="copyMessage" class="ml-4 text-green-600 font-semibold hidden">Copied!</span>
+        </section>
+    </div>
+
+    <script>
+        // Define rates and discounts (using US dollar values)
+        const RATES = {
+            salon: {
+                treatment: 80.00,
+                cutAndColorDiscount: 0.15, // 15% off when both are selected
+            },
+            media: {
+                minHours: 4,
+                hourlyRate: 140.00,
+                dailyRate: 900.00, // Day rate for 8 hours
+                dailyHours: 8,
+            }
+        };
+
+        // UI Elements
+        const serviceCategory = document.getElementById('serviceCategory');
+        const salonOptions = document.getElementById('salonOptions');
+        const mediaOptions = document.getElementById('mediaOptions');
+        const haircutSelect = document.getElementById('haircut');
+        const coloringSelect = document.getElementById('coloring');
+        const treatmentCheckbox = document.getElementById('treatment');
+        const numHoursMedia = document.getElementById('numHoursMedia');
+        const totalPriceEl = document.getElementById('totalPrice');
+        const baseRateEl = document.getElementById('baseRate');
+        const bundleMessageEl = document.getElementById('bundleMessage');
+        const contractDisplayEl = document.getElementById('contractDisplay');
+        const contractTextEl = document.getElementById('contractText');
+        const clientNameInput = document.getElementById('clientName');
+        const serviceDateInput = document.getElementById('serviceDate');
+
+        // Helper function for currency formatting (US locale)
+        const formatCurrency = (amount) => `$${amount.toFixed(2)}`;
+
+        // Function to update the UI (hide/show fields)
+        function updateUI() {
+            const category = serviceCategory.value;
+            if (category === 'salon') {
+                salonOptions.classList.remove('hidden');
+                mediaOptions.classList.add('hidden');
+            } else {
+                salonOptions.classList.add('hidden');
+                mediaOptions.classList.remove('hidden');
+            }
+            calculateBudget();
+        }
+
+        // Main calculation function
+        function calculateBudget() {
+            let total = 0;
+            let baseRate = 0;
+            bundleMessageEl.classList.add('hidden');
+
+            const category = serviceCategory.value;
+
+            if (category === 'salon') {
+                const haircutPrice = parseFloat(haircutSelect.value) || 0;
+                const coloringPrice = parseFloat(coloringSelect.value) || 0;
+                const treatmentPrice = treatmentCheckbox.checked ? RATES.salon.treatment : 0;
+
+                baseRate = haircutPrice + coloringPrice + treatmentPrice;
+                total = baseRate;
+
+                // Apply bundle discount if both haircut and color are selected
+                if (haircutPrice > 0 && coloringPrice > 0) {
+                    const discountableAmount = haircutPrice + coloringPrice;
+                    const discount = discountableAmount * RATES.salon.cutAndColorDiscount;
+                    total -= discount;
+                    bundleMessageEl.classList.remove('hidden');
+                }
+
+                baseRateEl.textContent = `Base Service Rate: ${formatCurrency(baseRate)}`;
+
+            } else if (category === 'media') {
+                let hours = parseInt(numHoursMedia.value) || 0;
+                
+                // Enforce 4-hour minimum
+                if (hours < RATES.media.minHours) {
+                    hours = RATES.media.minHours;
+                    numHoursMedia.value = hours; // Update the input field
+                }
+
+                // Calculate by day rate if 8 hours or more
+                if (hours >= RATES.media.dailyHours) {
+                    const numDays = Math.ceil(hours / RATES.media.dailyHours);
+                    total = numDays * RATES.media.dailyRate;
+                    baseRate = total;
+                    baseRateEl.textContent = `Base: ${numDays} day rate(s) of ${RATES.media.dailyHours}h (${formatCurrency(RATES.media.dailyRate)} each)`;
+                } else {
+                    // Otherwise, charge hourly
+                    total = hours * RATES.media.hourlyRate;
+                    baseRate = total;
+                    baseRateEl.textContent = `Base: ${hours} hour(s) (${formatCurrency(RATES.media.hourlyRate)} per hour)`;
+                }
+            }
+
+            // Update the total price display
+            totalPriceEl.textContent = formatCurrency(total);
+        }
+
+        // Function to generate the contract draft
+        function generateContract() {
+            const finalPrice = totalPriceEl.textContent;
+            const clientName = clientNameInput.value.trim();
+            const serviceDate = serviceDateInput.value;
+            const category = serviceCategory.value;
+
+            
+            if (!clientName || !serviceDate || finalPrice === '$0.00') {
+                alert('Please fill in your name, date, and define the quote before generating the contract.');
+                return;
+            }
+
+            let details = '';
+            if (category === 'salon') {
+                const haircutType = haircutSelect.options[haircutSelect.selectedIndex].text;
+                const coloringType = coloringSelect.options[coloringSelect.selectedIndex].text;
+                const treatment = treatmentCheckbox.checked ? 'Yes' : 'No';
+                const discountMessage = bundleMessageEl.classList.contains('hidden') ? 'None' : '15% (Cut + Color)';
+                
+                details = `
+Service Details:
+  - Category: Salon Services
+  - Haircut: ${haircutType}
+  - Coloring Service: ${coloringType}
+  - Deep Conditioning Treatment: ${treatment}
+  - Discount Applied: ${discountMessage}
+  - Final Value: ${finalPrice}
+`;
+            } else {
+                const hours = numHoursMedia.value;
+                details = `
+Service Details:
+  - Category: Film/TV/Photoshoot (Hourly)
+  - Hours Contracted: ${hours} hours
+  - Calculation Basis: ${hours >= RATES.media.dailyHours ? 'Day Rate' : 'Hourly Rate'}
+  - Final Value: ${finalPrice}
+`;
+            }
+
+
+            const contract = `
+BEAUTY SERVICES AGREEMENT (Draft)
+_________________________________________________________________
+
+CLIENT: ${clientName}
+SERVICE PROVIDER: Mira (SHEGETHER Representative)
+SERVICE: Provision of Hair Styling, Cutting, and Coloring services.
+SERVICE DATE: ${serviceDate}
+LOCATION: To be defined.
+
+1. PURPOSE OF THE AGREEMENT
+This agreement covers the provision of beauty services, as detailed below, to be executed by the SERVICE PROVIDER.
+
+2. SERVICE SPECIFICATIONS:
+${details}
+
+3. TOTAL VALUE AND PAYMENT METHOD
+The total quoted value for the specified services is ${finalPrice}.
+Payment Method: To be agreed upon (E.g., 50% upon booking and 50% upon service completion).
+
+4. OBLIGATIONS OF THE PARTIES
+Detailed obligations (scheduling, cancellations, preparation requirements, etc.) will be formalized in the final contract. This draft serves only to confirm the quote and selected services.
+
+_________________________         _________________________
+CLIENT: ${clientName}             SERVICE PROVIDER: Mira / SHEGETHER
+`;
+            
+            contractTextEl.textContent = contract;
+            contractDisplayEl.classList.remove('hidden');
+        }
+
+        // Function to copy the contract text to the clipboard
+        function copyContract() {
+            const textToCopy = contractTextEl.textContent;
+            
+            // Create a temporary text area element
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                // Copy the text to the clipboard
+                document.execCommand('copy');
+                
+                // Show the success message
+                const copyMessageEl = document.getElementById('copyMessage');
+                copyMessageEl.classList.remove('hidden');
+                setTimeout(() => {
+                    copyMessageEl.classList.add('hidden');
+                }, 2000);
+
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            } finally {
+                // Remove the temporary element
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        // Initialize calculation and UI on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            calculateBudget();
+        });
+    </script>
+</body>
+</html>
