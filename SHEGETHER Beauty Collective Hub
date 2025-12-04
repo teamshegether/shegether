@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHEGETHER - Beauty Collective</title>
+    <!-- Loads Tailwind CSS for quick and responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind configuration to use the Inter font and custom colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#9b59b6', // Purple (beauty, elegance tone)
+                        'secondary': '#f3e8ff', // Very light purple for background
+                        'accent': '#e74c3c', // Red/Copper for accent
+                        'dark-bg': '#2c3e50', // Dark background
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for the beauty brand aesthetic */
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .text-gradient {
+            background-image: linear-gradient(to right, #9b59b6, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background-color: #f3e8ff;
+            background-image: url("https://placehold.co/1200x600/f3e8ff/9b59b6?text=SHEGETHER+Beauty+Collective");
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800">
+
+    <!-- Fixed Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-primary">
+                SHEGETHER
+            </h1>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#about" class="text-gray-600 hover:text-primary transition duration-300">About</a>
+                <a href="#mi" class="text-gray-600 hover:text-primary transition duration-300">Mi (Makeup)</a>
+                <a href="#mira" class="text-gray-600 hover:text-primary transition duration-300">Mira (Hair & Cut)</a>
+                <a href="#contact" class="text-gray-600 hover:text-primary transition duration-300">Contact</a>
+            </nav>
+            <button id="menu-button" class="md:hidden text-primary focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu (hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-2">
+            <a href="#about" class="block px-6 py-2 text-gray-600 hover:bg-secondary">About</a>
+            <a href="#mi" class="block px-6 py-2 text-gray-600 hover:bg-secondary">Mi (Makeup)</a>
+            <a href="#mira" class="block px-6 py-2 text-gray-600 hover:bg-secondary">Mira (Hair & Cut)</a>
+            <a href="#contact" class="block px-6 py-2 text-gray-600 hover:bg-secondary">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Section (Hero) -->
+    <section class="hero-bg text-center py-20 md:py-32 rounded-b-xl shadow-lg">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+                <span class="text-gradient">SHEGETHER</span>
+            </h2>
+            <p class="text-xl md:text-2xl text-primary font-light italic mb-8">
+                Together, we create your best version.
+            </p>
+            <a href="#team" class="inline-block bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-opacity-90 transition duration-300 transform hover:scale-105">
+                Meet the Team and Services
+            </a>
+        </div>
+    </section>
+
+    <!-- About SHEGETHER Section -->
+    <section id="about" class="py-16 md:py-24 bg-secondary">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h3 class="text-4xl font-bold text-center text-primary mb-12">Our Mission</h3>
+            <div class="bg-white p-8 rounded-xl shadow-2xl">
+                <p class="text-lg text-gray-700 mb-6">
+                    SHEGETHER was born from the union of three friends passionate about transformation. We are a collective of beauty artists who believe in the power of self-expression, offering personalized and high-quality services in Makeup, Hair, and Styling.
+                </p>
+                <p class="text-lg text-gray-700">
+                    Our focus is on excellence in every detail, whether in a unique moment like a wedding, a creative filming project, or the daily care of your look. Click below and discover each artist's specialty.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team and Individual Links Section -->
+    <section id="team" class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center text-dark-bg mb-12">Our Artists</h3>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Mi's Card (Makeup & Styling) -->
+                <div id="mi" class="bg-white p-8 rounded-xl shadow-xl card-hover transition duration-500 border-t-4 border-primary">
+                    <div class="flex flex-col md:flex-row items-center space-x-6">
+                        <img src="https://placehold.co/100x100/9b59b6/ffffff?text=Mi" alt="Portrait of Makeup Artist Mi" class="w-24 h-24 rounded-full object-cover mb-4 md:mb-0 border-4 border-secondary">
+                        <div>
+                            <h4 class="text-3xl font-extrabold text-primary mb-2">Mi - Makeup and Hair Styling Expert</h4>
+                            <p class="text-gray-600 mb-4">
+                                Mi is a master in Makeup, Hair Styling, and Special Effects for: Weddings, Photo Shoots, Film and TV, Music Videos, and Fashion. Her focus is the art of storytelling through visual aesthetics.
+                            </p>
+                            <p class="font-semibold text-dark-bg mb-4">Areas of Expertise:</p>
+                            <ul class="list-disc list-inside text-gray-700 ml-4 mb-6">
+                                <li>Bridal and Events (Hair and Makeup)</li>
+                                <li>Media Production (Editorial, TV/Film)</li>
+                                <li>High Fashion Beauty</li>
+                            </ul>
+                            <!-- Button to Mi's Individual Site -->
+                            <a href="mi_orcamento.html" class="inline-block bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-300">
+                                ➡️ Mi's Pricing and Portfolio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mira's Card (Hair & Color Expert) - UPDATED LINK HERE -->
+                <div id="mira" class="bg-white p-8 rounded-xl shadow-xl card-hover transition duration-500 border-t-4 border-accent">
+                    <div class="flex flex-col md:flex-row items-center space-x-6">
+                        <img src="https://placehold.co/100x100/e74c3c/ffffff?text=Mira" alt="Portrait of Hair Stylist Mira" class="w-24 h-24 rounded-full object-cover mb-4 md:mb-0 border-4 border-secondary">
+                        <div>
+                            <h4 class="text-3xl font-extrabold text-accent mb-2">Mira - Full Service Hair & Color Expert</h4>
+                            <p class="text-gray-600 mb-4">
+                                Mira specializes in both Media/Event productions and comprehensive, daily hair care. She offers high-performance Cutting, Coloring, Treatment, and Finishing services.
+                            </p>
+                            <p class="font-semibold text-dark-bg mb-4">Areas of Expertise:</p>
+                            <ul class="list-disc list-inside text-gray-700 ml-4 mb-6">
+                                <li>Color Transformation (Colorist)</li>
+                                <li>Cutting and Hair Reconstruction</li>
+                                <li>Event Production (Hair and Makeup)</li>
+                            </ul>
+                            <!-- Button to Mira's Individual Site - NOW POINTS TO MIRA'S QUOTE PAGE -->
+                            <a href="mira_orcamento.html" class="inline-block bg-accent text-white font-semibold py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-300">
+                                ➡️ Mira's Pricing and Portfolio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-dark-bg text-white rounded-t-xl">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-3xl font-bold mb-4">Ready for your transformation?</h3>
+            <p class="text-lg mb-8 text-gray-300">Contact us to learn more about projects and date availability.</p>
+            
+            <a href="mailto:contact@shegether.com" class="inline-block bg-white text-dark-bg font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition duration-300 transform hover:scale-105">
+                Contact Us
+            </a>
+
+            <div class="mt-8 text-sm text-gray-400">
+                <p>SHEGETHER Beauty Collective | [Your Phone Number]</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript for mobile menu interactivity -->
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Adds an event to close the menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
